@@ -67,40 +67,50 @@ function create_user($people_id, $username, $password, $userrights_id){
 
 }
 
-
-?>
-<html>
-    <head>
-        <title>Admin - Create user</title>
-    </head>
-    <body>
-    <?php
-    if(empty($_POST)) {
-        ?>
-        <form action="" method="post">
-            <input type="text" name="username" value="Username"><br>
-            <input type="password" name="password" value="11111111"><br>
-            <input type="number" name="people_id" value="Person_ID"><br>
-            <input type="number" name="userrights_id" value="userrights_id"><br>
-            <input type="submit" value="Create user">
-        </form>
-        <?php
-    }else{
-        $create_user_response = create_user($_POST["people_id"],
-            $_POST["username"],
-            $_POST["password"],
-            $_POST["userrights_id"]);
-        if(is_bool($create_user_response)){
-            echo "<h1>SUCCESS</h1>";
-        }else{
-            echo "<ul>";
-            foreach($create_user_response as $error){
-                echo "<li>".$error."</li>";
-            }
-            echo "</ul>";
-        }
-    }
-    $mysqli->close();
+if(isset($_SESSION["id"])){
+    $can_create_user = get_user_rights($_SESSION["id"])["create_user"];
+    if($can_create_user){
     ?>
-    </body>
-</html>
+    <html>
+        <head>
+            <title>Admin - Create user</title>
+        </head>
+        <body>
+        <?php
+        if(empty($_POST)) {
+            ?>
+            <form action="" method="post">
+                <input type="text" name="username" value="Username"><br>
+                <input type="password" name="password" value="11111111"><br>
+                <input type="number" name="people_id" value="Person_ID"><br>
+                <input type="number" name="userrights_id" value="userrights_id"><br>
+                <input type="submit" value="Create user">
+            </form>
+            <?php
+        }else{
+            $create_user_response = create_user($_POST["people_id"],
+                $_POST["username"],
+                $_POST["password"],
+                $_POST["userrights_id"]);
+            if(is_bool($create_user_response)){
+                echo "<h1>SUCCESS</h1>";
+            }else{
+                echo "<ul>";
+                foreach($create_user_response as $error){
+                    echo "<li>".$error."</li>";
+                }
+                echo "</ul>";
+            }
+        }
+        $mysqli->close();
+
+        ?>
+        </body>
+    </html>
+    <?php
+    }
+}else{
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    header("Location: not_found.php");
+}
+?>
