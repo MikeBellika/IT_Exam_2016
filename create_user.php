@@ -93,7 +93,9 @@ if(isset($_SESSION["id"])){
                 $_POST["userrights_id"]);
             if($create_user_response === true){
                 echo "<h1>SUCCESS</h1>";
+                log_event("USER_CREATE", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], $_POST["people_id"]);
             }elseif(is_array($create_user_response)){
+                log_event("USER_CREATE", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], $_POST["people_id"]);
                 echo "<ul>";
                 foreach($create_user_response as $error){
                     echo "<li>".$error."</li>";

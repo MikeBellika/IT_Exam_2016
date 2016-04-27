@@ -72,9 +72,11 @@ if(isset($_SESSION["id"])){
         }else{
             $create_person_response = create_person($_POST["name"],
                 $_POST["cpr"]);
-            if(is_bool($create_person_response)){
+            if($create_person_response === true){
+                log_event("PERSON_CREATE", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
                 echo "<h1>SUCCESS</h1>";
-            }else{
+            }elseif(is_array($create_person_response)){
+                log_event("PERSON_CREATE", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
                 echo "<ul>";
                 foreach($create_person_response as $error){
                     echo "<li>".$error."</li>";
