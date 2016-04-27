@@ -25,7 +25,7 @@ function create_person($name, $cpr){
     $stmt->bind_param("i", $cpr);
     $stmt->execute();
     $stmt->store_result();
-    if($stmt->num_rows() > 0){
+    if($stmt->num_rows > 0){
         array_push($error, "There is already a user with that CPR");
         return $error;
     }
@@ -45,7 +45,7 @@ function create_person($name, $cpr){
         return $error;
     }
     $stmt->close();
-    $mysqli->close();
+
     return true;
 
 
@@ -80,6 +80,7 @@ if(empty($_POST)) {
         echo "</ul>";
     }
 }
+$mysqli->close();
 ?>
 </body>
 </html>

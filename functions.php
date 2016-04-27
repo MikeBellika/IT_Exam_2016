@@ -5,6 +5,7 @@
  * Date: 26-Apr-16
  * Time: 19:06
  */
+session_start();
 $mysqli = new mysqli("localhost", "root", "", "eksamen");
 
 if (mysqli_connect_errno())
@@ -17,11 +18,12 @@ function generate_hash($password){
     return crypt($password, $salt);
 }
 
-function log_event($action, $ip, $user_id, $people_id){
+function log_event($action, $response, $ip, $user_id, $people_id){
     global $mysqli;
-    $query = "INSERT INTO logs (action, ip, users_id, people_id) VALUES (?,?,?,?)";
+    $error = array();
+    $query = "INSERT INTO logs (action, response, ip, users_id, people_id) VALUES (?,?,?,?,?)";
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('ssii', $action, $ip, $user_id, $people_id);
+    $stmt->bind_param('sisii', $action, $response, $ip, $user_id, $people_id);
     if(!$stmt->execute()){
         $stmt->close();
         array_push($error, "Error code: #1");

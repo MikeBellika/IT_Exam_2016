@@ -100,6 +100,7 @@ function create_user($people_id, $username, $password, $userrights_id){
             echo "</ul>";
         }
     }
+    $mysqli->close();
     ?>
     </body>
 </html>
