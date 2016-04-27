@@ -51,36 +51,45 @@ function create_person($name, $cpr){
 
 }
 
-
-?>
-<html>
-<head>
-    <title>Admin - Create person</title>
-</head>
-<body>
-<?php
-if(empty($_POST)) {
-    ?>
-    <form action="" method="post">
-        <input type="text" name="name" value="Name"><br>
-        <input type="number" name="cpr"><br>
-        <input type="submit" value="Create person">
-    </form>
-    <?php
-}else{
-    $create_person_response = create_person($_POST["name"],
-        $_POST["cpr"]);
-    if(is_bool($create_person_response)){
-        echo "<h1>SUCCESS</h1>";
-    }else{
-        echo "<ul>";
-        foreach($create_person_response as $error){
-            echo "<li>".$error."</li>";
+if(isset($_SESSION["id"])){
+    $can_create_person = get_user_rights($_SESSION["id"])["create_person"];
+    if($can_create_person){
+        ?>
+        <html>
+        <head>
+            <title>Admin - Create person</title>
+        </head>
+        <body>
+        <?php
+        if(empty($_POST)) {
+            ?>
+            <form action="" method="post">
+                <input type="text" name="name" value="Name"><br>
+                <input type="number" name="cpr"><br>
+                <input type="submit" value="Create person">
+            </form>
+            <?php
+        }else{
+            $create_person_response = create_person($_POST["name"],
+                $_POST["cpr"]);
+            if(is_bool($create_person_response)){
+                echo "<h1>SUCCESS</h1>";
+            }else{
+                echo "<ul>";
+                foreach($create_person_response as $error){
+                    echo "<li>".$error."</li>";
+                }
+                echo "</ul>";
+            }
         }
-        echo "</ul>";
+        $mysqli->close();
+        ?>
+        </body>
+        </html>
+            <?php
     }
+}else{
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    header("Location: not_found.php");
 }
-$mysqli->close();
 ?>
-</body>
-</html>
