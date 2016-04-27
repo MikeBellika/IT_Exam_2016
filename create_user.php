@@ -61,7 +61,6 @@ function create_user($people_id, $username, $password, $userrights_id){
         return $error;
     }
     $stmt->close();
-    $mysqli->close();
     return true;
 
 
@@ -70,8 +69,8 @@ function create_user($people_id, $username, $password, $userrights_id){
 if(isset($_SESSION["id"])){
     $can_create_user = get_user_rights($_SESSION["id"])["create_user"];
     if($can_create_user){
-    ?>
-    <html>
+        ?>
+        <html>
         <head>
             <title>Admin - Create user</title>
         </head>
@@ -92,9 +91,9 @@ if(isset($_SESSION["id"])){
                 $_POST["username"],
                 $_POST["password"],
                 $_POST["userrights_id"]);
-            if(is_bool($create_user_response)){
+            if($create_user_response === true){
                 echo "<h1>SUCCESS</h1>";
-            }else{
+            }elseif(is_array($create_user_response)){
                 echo "<ul>";
                 foreach($create_user_response as $error){
                     echo "<li>".$error."</li>";
