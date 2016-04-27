@@ -30,4 +30,18 @@ function log_event($action, $response, $ip, $user_id, $people_id){
         return $error;
     }
 }
+
+function get_user_rights($user_id){
+    global $mysqli;
+    $stmt = $mysqli->prepare("SELECT user_rights.* FROM user_rights
+                              LEFT JOIN users
+                              ON user_rights.id=users.user_rights_id
+                              WHERE users.id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    $stmt->close();
+    return $row;
+}
 ?>
