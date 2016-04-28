@@ -109,6 +109,9 @@ if(isset($_SESSION["id"])){
         </body>
     </html>
     <?php
+    }else{
+        header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+        header("Location: not_found.php");
     }
 }else{
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
