@@ -13,6 +13,24 @@ if (mysqli_connect_errno())
     echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
+if(isset($_SESSION["id"])){
+    if(is_first_time_login($_SESSION["id"]) == 1 && !isset($_GET["first_time"])){
+        header("Location:change_password.php?first_time=1");
+    }
+}
+
+function is_first_time_login($id){
+    global $mysqli;
+
+    $stmt = $mysqli->prepare("SELECT first_time_login FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->bind_result($first_time_login);
+    $stmt->fetch();
+    $stmt->close();
+    return $first_time_login;
+}
+
 function generate_hash($password){
     $salt = '$2y$rNQH1uwlNOqRbzYhWeUa$' . substr(md5(uniqid(rand(), true)), 0, 22);
     return crypt($password, $salt);
@@ -29,6 +47,14 @@ function log_event($action, $response, $ip, $user_id, $people_id){
         array_push($error, "Error code: #1");
         return $error;
     }
+}
+
+function decrypt_cpr($cpr){
+    return $cpr;
+}
+
+function encrypt_cpr($cpr){
+
 }
 
 function get_user_rights($user_id){
