@@ -67,17 +67,26 @@ if(isset($_SESSION["id"])){
                         <td><input type="submit" value="Update rights"></td>
                     </form>
                 </tr>
-                </table>
                 <?php
             }
+            echo "</table>";
             $stmt->close();
         }else{
-            //Ensure that the ID is valid and that it isn't the super admin preset
-            $stmt = $mysqli->prepare("SELECT id FROM user_rights WHERE id=?");
-            $stmt->bind_param("i", $_POST["id"]);
-            if($stmt->execute() && $_POST["id"] != 1){
-                $stmt->close();
-                $query = "UPDATE user_rights
+            $errors = array();
+            if($_POST["id"] == 1){
+                array_push($errors, "You cannot change the Super admin preset");
+            }
+            if($_POST["manage_user_rights_presets"] != $_POST["create_user"]){
+                array_push($errors, "A user with the ability to create a person must also the the ability to manage
+                 user rights");
+            }
+            if(empty($errors)){
+                //Ensure that the ID is valid
+                $stmt = $mysqli->prepare("SELECT id FROM user_rights WHERE id=?");
+                $stmt->bind_param("i", $_POST["id"]);
+                if($stmt->execute()){
+                    $stmt->close();
+                    $query = "UPDATE user_rights
                               SET preset_name=?,
                               view_case=?,
                               edit_case=?,
@@ -94,37 +103,46 @@ if(isset($_SESSION["id"])){
                               view_logs=?,
                               manage_user_rights_presets=?
                               WHERE id=?";
-                $stmt = $mysqli->prepare($query);
-                $stmt->bind_param("siiiiiiiiiiiiiii",
-                    $_POST["preset_name"],
-                    $_POST["view_case"],
-                    $_POST["edit_case"],
-                    $_POST["delete_case"],
-                    $_POST["create_case"],
-                    $_POST["edit_user"],
-                    $_POST["delete_user"],
-                    $_POST["create_user"],
-                    $_POST["view_users"],
-                    $_POST["edit_person"],
-                    $_POST["delete_person"],
-                    $_POST["create_person"],
-                    $_POST["view_people"],
-                    $_POST["view_logs"],
-                    $_POST["manage_user_rights_presets"],
-                    $_POST["id"]);
-                if($stmt->execute()){
-                    echo "<h2>User rights updated!</h2>";
-                    log_event("USER_RIGHTS_UPDATE", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+                    $stmt = $mysqli->prepare($query);
+                    $stmt->bind_param("siiiiiiiiiiiiiii",
+                        $_POST["preset_name"],
+                        $_POST["view_case"],
+                        $_POST["edit_case"],
+                        $_POST["delete_case"],
+                        $_POST["create_case"],
+                        $_POST["edit_user"],
+                        $_POST["delete_user"],
+                        $_POST["create_user"],
+                        $_POST["view_users"],
+                        $_POST["edit_person"],
+                        $_POST["delete_person"],
+                        $_POST["create_person"],
+                        $_POST["view_people"],
+                        $_POST["view_logs"],
+                        $_POST["manage_user_rights_presets"],
+                        $_POST["id"]);
+                    if($stmt->execute()){
+                        echo "<h2>User rights updated!</h2>";
+                        log_event("USER_RIGHTS_UPDATE", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+                    }else{
+                        array_push($errors, "<h2>Error: Something went wrong. 
+                               If this problem persists, please contact a system administrator</h2>");
+                    }
+                    $stmt->close();
                 }else{
-                    echo "<h2>Error: Something went wrong. 
-                               If this problem persists, please contact a system administrator</h2>";
-                    log_event("USER_RIGHTS_UPDATE", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+                    echo "test";
+                    //ID Invalid. Really only possible if the user has used developer tools to tamper with the form.
+                    //This is more serious than just a normal error, so it gets its own error message.
+                    log_event("USER_RIGHTS_FORM_TAMPER", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+                    echo "<h2>Error: Invalid ID. This event has been logged</h2>";
                 }
-                $stmt->close();
             }else{
-                //ID Invalid. Really only possible if the user has used developer tools to tamper with the form.
-                log_event("USER_RIGHTS_FORM_TAMPER", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
-                echo "<h2>Error: Invalid ID. This event has been logged</h2>";
+                log_event("USER_RIGHTS_UPDATE", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+                echo "<ul>";
+                foreach($errors as $error){
+                    echo "<li>".$error."</li>";
+                }
+                echo "</ul>";
             }
         }
         ?>
