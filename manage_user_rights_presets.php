@@ -72,10 +72,10 @@ if(isset($_SESSION["id"])){
             }
             $stmt->close();
         }else{
-            //Ensure that the ID is valid
+            //Ensure that the ID is valid and that it isn't the super admin preset
             $stmt = $mysqli->prepare("SELECT id FROM user_rights WHERE id=?");
             $stmt->bind_param("i", $_POST["id"]);
-            if($stmt->execute()){
+            if($stmt->execute() && $_POST["id"] != 1){
                 $stmt->close();
                 $query = "UPDATE user_rights
                               SET preset_name=?,
