@@ -24,6 +24,7 @@ if(isset($_SESSION["id"])){
                 <tr>
                     <td><b>ID</b></td>
                     <td><b>Preset name</b></td>
+                    <td><b>View case</b></td>
                     <td><b>Edit case</b></td>
                     <td><b>Delete case</b></td>
                     <td><b>Create case</b></td>
@@ -48,7 +49,8 @@ if(isset($_SESSION["id"])){
                 <tr>
                     <form action="" method="POST">
                         <td><input type="hidden" name="id" value="<?php echo $row["id"] ?>"></td>
-                        <td><?php echo $row["preset_name"] ?></td>
+                        <td><input type="text" name="preset_name" value="<?php echo $row["preset_name"] ?>"</td>
+                        <td><input type="hidden" value="0" name="view_case"><input type="checkbox" name="view_case" value="1" <?php echo str_replace(1, "checked", $row["view_case"]                 )?>></td>
                         <td><input type="hidden" value="0" name="edit_case"><input type="checkbox" name="edit_case" value="1" <?php echo str_replace(1, "checked", $row["edit_case"]                 )?>></td>
                         <td><input type="hidden" value="0" name="delete_case"><input type="checkbox" name="delete_case" value="1" <?php echo str_replace(1, "checked", $row["delete_case"]               )?>></td>
                         <td><input type="hidden" value="0" name="create_case"><input type="checkbox" name="create_case" value="1" <?php echo str_replace(1, "checked", $row["create_case"]               )?>></td>
@@ -76,7 +78,9 @@ if(isset($_SESSION["id"])){
             if($stmt->execute()){
                 $stmt->close();
                 $query = "UPDATE user_rights
-                              SET edit_case=?,
+                              SET preset_name=?,
+                              view_case=?,
+                              edit_case=?,
                               delete_case=?,
                               create_case=?,
                               edit_user=?,
@@ -91,7 +95,9 @@ if(isset($_SESSION["id"])){
                               manage_user_rights_presets=?
                               WHERE id=?";
                 $stmt = $mysqli->prepare($query);
-                $stmt->bind_param("iiiiiiiiiiiiii",
+                $stmt->bind_param("siiiiiiiiiiiiiii",
+                    $_POST["preset_name"],
+                    $_POST["view_case"],
                     $_POST["edit_case"],
                     $_POST["delete_case"],
                     $_POST["create_case"],
