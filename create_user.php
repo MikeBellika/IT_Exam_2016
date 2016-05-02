@@ -47,6 +47,15 @@ function create_user($people_id, $username, $password, $userrights_id){
     }
     $stmt->close();
 
+    $stmt = $mysqli->prepare("SELECT id FROM user_rights WHERE id = ?");
+    $stmt->bind_param("i", $userrights_id);
+    $stmt->execute();
+    $stmt->store_result();
+    if($stmt->num_rows() == 0){
+        array_push($error, "No user_right with that id");
+    }
+    $stmt->close();
+
     if(count($error) == 0){
         $password = generate_hash($password);
         $query = "INSERT INTO users (username, password, user_rights_id, people_id) VALUES (?,?,?,?)";
