@@ -7,6 +7,7 @@
  */
 require("functions.php");
 
+
 function login($username, $password){
     global $mysqli;
     $error = array();
@@ -50,7 +51,8 @@ if(empty($_POST) && !isset($_SESSION["username"])) {
         log_event("LOGIN", 1, $_SERVER["REMOTE_ADDR"], $login_response, NULL);
         $_SESSION["username"] = $_POST["username"];
         $_SESSION["id"] = $login_response;
-        echo "<h1>SUCCESS</h1>";
+        echo "<h1>SUCCESS</h1>"; 
+        
     }else{
         log_event("LOGIN", 0, $_SERVER["REMOTE_ADDR"], NULL, NULL);
         echo "<ul>";

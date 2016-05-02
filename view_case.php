@@ -12,7 +12,7 @@ if(isset($_SESSION["id"])) {
         if (!empty($_GET["id"])) {
             $id = $_GET["id"];
             log_event("VIEW_CASE", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], $id);
-            $stmt = $mysqli->prepare("SELECT cases.*, people.name FROM cases
+            $stmt = $mysqli->prepare("SELECT cases.*, people.first_name, people.last_name FROM cases
                                       LEFT JOIN people ON cases.people_id=people.id
                                       WHERE cases.id = ?");
             $stmt->bind_param("i", $id);
@@ -38,7 +38,7 @@ if(isset($_SESSION["id"])) {
                 </tr>
                 <tr>
                     <td>Person:</td>
-                    <td><?php echo $row["name"]; ?></td>
+                    <td><?php echo $row["first_name"]." ".$row["last_name"]; ?></td>
                 </tr>
                 <tr>
                     <td>Content:</td>

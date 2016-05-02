@@ -26,13 +26,13 @@ if(isset($_SESSION["id"])) {
 
             <html>
             <head>
-                <title><?php echo $row["name"]; ?></title>
+                <title><?php echo $row["first_name"]." ".$row["last_name"]; ?></title>
             </head>
             <body>
                 <table>
                     <tr>
                         <td>Name:</td>
-                        <td><?php echo $row["name"]; ?></td>
+                        <td><?php echo $row["first_name"]." ".$row["last_name"]; ?></td>
                     </tr>
                     <tr>
                         <td>CPR:</td>

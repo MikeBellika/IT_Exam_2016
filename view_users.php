@@ -6,6 +6,7 @@
  * Time: 14:56
  */
 require("functions.php");
+
 if(isset($_SESSION["id"])){
     $can_view_logs = get_user_rights($_SESSION["id"])["view_users"];
     if($can_view_logs){
@@ -35,9 +36,7 @@ if(isset($_SESSION["id"])){
             </tr>
             <?php
             if(empty($_POST)) {
-                //select everything from logs and username from the users table.
-                //the key in the users table is the id of users_id
-                $stmt = $mysqli->prepare("SELECT users.*, people.name, people.cpr FROM USERS 
+                $stmt = $mysqli->prepare("SELECT users.*, people.first_name, people.last_name, people.cpr FROM USERS 
                                           LEFT JOIN people ON users.people_id=people.id
                                           ORDER BY users.id");
                 $stmt->execute();
@@ -48,7 +47,7 @@ if(isset($_SESSION["id"])){
                         <td><?php echo $row["id"] ?></td>
                         <td><?php echo $row["username"] ?></td>
                         <td><?php echo $row["user_rights_id"] ?></td>
-                        <td><?php echo $row["name"] ?></td>
+                        <td><?php echo $row["first_name"]." ".$row["last_name"]; ?></td>
                         <td><?php echo $row["cpr"] ?></td>
                     </tr>
                     <?php
@@ -72,7 +71,7 @@ if(isset($_SESSION["id"])){
                                 <td><?php echo $row["id"] ?></td>
                                 <td><?php echo $row["username"] ?></td>
                                 <td><?php echo $row["user_rights_id"] ?></td>
-                                <td><?php echo $row["name"] ?></td>
+                                <td><?php echo $row["first_name"]." ".$row["last_name"]; ?></td>
                                 <td><?php echo $row["cpr"] ?></td>
                             </tr>
                             <?php

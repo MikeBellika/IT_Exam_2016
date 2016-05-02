@@ -75,7 +75,8 @@ if(isset($_SESSION["id"])){
                                 || $search_term == "ip"
                                 || $search_term == "response"
                             ) {
-                                $query = "SELECT logs.*, users.username, people.cpr, people.name FROM logs
+                                $query = "SELECT logs.*, users.username, people.cpr, people.first_name, people.last_name 
+                                              FROM logs
                                               LEFT JOIN users ON logs.users_id=users.id
                                               LEFT JOIN people ON logs.people_id=people.id
                                               WHERE logs." . $search_term . " LIKE ?
@@ -83,13 +84,15 @@ if(isset($_SESSION["id"])){
                             } elseif ($search_term == "cpr"
                                 || $search_term == "name"
                             ) {
-                                $query = "SELECT logs.*, users.username, people.cpr, people.name FROM logs
+                                $query = "SELECT logs.*, users.username, people.cpr, people.first_name, people.last_name 
+                                              FROM logs
                                               LEFT JOIN users ON logs.users_id=users.id
                                               LEFT JOIN people ON logs.people_id=people.id
                                               WHERE people." . $search_term . " LIKE ?
                                               ORDER BY logs.id";
                             } elseif ($search_term == "username") {
-                                $query = "SELECT logs.*, users.username, people.cpr, people.name FROM logs
+                                $query = "SELECT logs.*, users.username, people.cpr, people.first_name, people.last_name
+                                              FROM logs
                                               LEFT JOIN users ON logs.users_id=users.id
                                               LEFT JOIN people ON logs.people_id=people.id
                                               WHERE users." . $search_term . " LIKE ?
@@ -113,7 +116,7 @@ if(isset($_SESSION["id"])){
                                         <td><?php echo $row["ip"] ?></td>
                                         <td><?php echo $row["response"] ?></td>
                                         <td><?php echo $row["username"] ?></td>
-                                        <td><?php echo $row["name"] ?></td>
+                                        <td><?php echo $row["first_name"]." ".$row["last_name"]; ?></td>
                                         <td><?php echo decrypt_cpr($row["cpr"]) ?></td>
                                     </tr>
                                     <?php

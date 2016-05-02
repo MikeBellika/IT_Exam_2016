@@ -7,13 +7,13 @@
  */
 require("functions.php");
 
-function create_person($name, $cpr){
+function create_person($first_name, $last_name, $cpr){
     global $mysqli;
     $error = array();
 
     $cpr = preg_replace('/\D/', '', $cpr);
 
-    if(empty($cpr) || empty($name)){
+    if(empty($cpr) || empty($first_name) || empty($last_name)){
         array_push($error, "All fields must be filled");
     }
     if(strlen($cpr) != 10){
@@ -32,10 +32,9 @@ function create_person($name, $cpr){
     $stmt->close();
 
     if(count($error) == 0){
-        //TODO: ENCRYPT THIS SHIT
-        $query = "INSERT INTO people (name, cpr) VALUES (?,?)";
+        $query = "INSERT INTO people (first_name, last_name, cpr) VALUES (?,?, ?)";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('si', $name, $cpr);
+        $stmt->bind_param('si', $first_name, $last_name, $cpr);
         if(!$stmt->execute()){
             $stmt->close();
             array_push($error, "Something went wrong when creating person. Please contact a system administrator");
@@ -64,13 +63,15 @@ if(isset($_SESSION["id"])){
         if(empty($_POST)) {
             ?>
             <form action="" method="post">
-                <input type="text" name="name" value="Name"><br>
+                <input type="text" name="first_name" value="First name"><br>
+                <input type="text" name="last_name" value="Last name"><br>
                 <input type="number" name="cpr"><br>
                 <input type="submit" value="Create person">
             </form>
             <?php
         }else{
-            $create_person_response = create_person($_POST["name"],
+            $create_person_response = create_person($_POST["first_name"],
+                $_POST["last_name"],
                 $_POST["cpr"]);
             if($create_person_response === true){
                 log_event("PERSON_CREATE", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
