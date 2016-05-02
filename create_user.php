@@ -81,8 +81,34 @@ if(isset($_SESSION["id"])){
             <form action="" method="post">
                 <input type="text" name="username" value="Username"><br>
                 <input type="password" name="password" value="11111111"><br>
-                <input type="number" name="people_id" value="Person_ID"><br>
-                <input type="number" name="userrights_id" value="userrights_id"><br>
+                <select name="people_id">
+                    <?php
+                    $stmt = $mysqli->prepare("SELECT first_name, last_name, id FROM people");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while($row = $result->fetch_assoc()){
+                        ?>
+                        <option value="<?php echo $row["id"]?>">
+                            <?php echo $row["first_name"]." ". $row["last_name"]?>
+                        </option>
+                        <?php
+                    }
+                    $stmt->close();
+                    ?>
+                </select><br>
+                <select name="userrights_id">
+                    <?php
+                    $stmt = $mysqli->prepare("SELECT preset_name, id FROM user_rights");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while($row = $result->fetch_assoc()){
+                        ?>
+                        <option value="<?php echo $row["id"]?>"><?php echo $row["preset_name"]?></option>
+                        <?php
+                    }
+                    $stmt->close();
+                    ?>
+                </select><br>
                 <input type="submit" value="Create user">
             </form>
             <?php

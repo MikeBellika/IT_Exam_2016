@@ -17,7 +17,7 @@ function create_person($first_name, $last_name, $cpr){
         array_push($error, "All fields must be filled");
     }
     if(strlen($cpr) != 10){
-        array_push($error, "CPR needs to be 10 characters long and may only consist of numbers");
+        array_push($error, "CPR needs to be 10 characters long and must only consist of numbers");
     }
 
 
@@ -32,9 +32,9 @@ function create_person($first_name, $last_name, $cpr){
     $stmt->close();
 
     if(count($error) == 0){
-        $query = "INSERT INTO people (first_name, last_name, cpr) VALUES (?,?, ?)";
+        $query = "INSERT INTO people (first_name, last_name, cpr) VALUES (?,?,?)";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('si', $first_name, $last_name, $cpr);
+        $stmt->bind_param('ssi', $first_name, $last_name, $cpr);
         if(!$stmt->execute()){
             $stmt->close();
             array_push($error, "Something went wrong when creating person. Please contact a system administrator");
