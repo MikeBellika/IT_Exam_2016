@@ -78,13 +78,7 @@ function create_user($people_id, $username, $password, $userrights_id){
 if(isset($_SESSION["id"])){
     $can_create_user = get_user_rights($_SESSION["id"])["create_user"];
     if($can_create_user){
-        ?>
-        <html>
-        <head>
-            <title>Admin - Create user</title>
-        </head>
-        <body>
-        <?php
+        top("Admin - Create user");
         if(empty($_POST)) {
             ?>
             <form action="" method="post">

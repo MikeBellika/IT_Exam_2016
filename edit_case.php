@@ -33,14 +33,9 @@ if(isset($_SESSION["id"])) {
 
             $row = $result->fetch_assoc();
             $stmt->close();
-            ?>
 
-            <html>
-            <head>
-                <title>Editing case - <?php echo $row["title"]; ?></title>
-            </head>
-            <body>
-            <?php
+            top("Editing case - ".$row["title"]);
+
             if(empty($_POST)) {
                 ?>
                 <form action="" method="POST">

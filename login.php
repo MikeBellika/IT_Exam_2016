@@ -31,13 +31,8 @@ function login($username, $password){
 }
 
 
-?>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-<?php
+top("Login");
+
 if(empty($_POST) && !isset($_SESSION["username"])) {
     ?>
     <form action="" method="post">

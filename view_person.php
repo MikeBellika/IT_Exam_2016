@@ -22,13 +22,8 @@ if(isset($_SESSION["id"])) {
 
             $row = $result->fetch_assoc();
             $stmt->close();
+            top($row["first_name"]." ".$row["last_name"]);
             ?>
-
-            <html>
-            <head>
-                <title><?php echo $row["first_name"]." ".$row["last_name"]; ?></title>
-            </head>
-            <body>
                 <table>
                     <tr>
                         <td>Name:</td>

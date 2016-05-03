@@ -9,13 +9,7 @@ require("functions.php");
 if(isset($_SESSION["id"])){
     $can_manage_presets = get_user_rights($_SESSION["id"])["manage_user_rights_presets"];
     if($can_manage_presets){
-        ?>
-        <html>
-        <head>
-            <title>Admin - Create user rights preset</title>
-        </head>
-        <body>
-        <?php
+        top("Admin - Create user rights preset");
         if(empty($_POST)) {
         ?>
         <table>

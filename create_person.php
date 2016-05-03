@@ -53,13 +53,7 @@ function create_person($first_name, $last_name, $cpr){
 if(isset($_SESSION["id"])){
     $can_create_person = get_user_rights($_SESSION["id"])["create_person"];
     if($can_create_person){
-        ?>
-        <html>
-        <head>
-            <title>Admin - Create person</title>
-        </head>
-        <body>
-        <?php
+        top("Admin - Create person");
         if(empty($_POST)) {
             ?>
             <form action="" method="post">

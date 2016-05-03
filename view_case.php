@@ -24,6 +24,8 @@ if(isset($_SESSION["id"])) {
 
             $row = $result->fetch_assoc();
             $stmt->close();
+
+            top("Viewing case - ".$row["title"]);
             ?>
 
             <html>
