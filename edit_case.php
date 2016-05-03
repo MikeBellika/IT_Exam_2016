@@ -63,12 +63,14 @@ if(isset($_SESSION["id"])) {
                             <td><select name="username">
                                     <option>Select user</option>
                                     <?php
-                                    $stmt = $mysqli->prepare("SELECT users.username FROM users
+                                    $stmt = $mysqli->prepare("SELECT users.username, user_rights.edit_case FROM users
                                                       LEFT JOIN user_rights ON users.user_rights_id=user_rights.id");
                                     $stmt->execute();
                                     $result = $stmt->get_result();
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<option value=\"" . $row["username"] . "\">" . $row["username"] . "</option>";
+                                        if ($row["edit_case"] == 1) {
+                                            echo "<option value=\"" . $row["username"] . "\">" . $row["username"] . "</option>";
+                                        }
                                     }
                                     ?>
                                 </select></td>

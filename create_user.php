@@ -6,7 +6,6 @@
  * Time: 19:03
  */
 require("functions.php");
-
 function create_user($people_id, $username, $password, $userrights_id){
     global $mysqli;
     $error = array();

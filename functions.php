@@ -54,11 +54,14 @@ function top($title){
         if (get_user_rights($id)["create_person"]) {
             echo '<a href="create_person.php">Create person</a> ';
         }
+        if (get_user_rights($id)["create_case"]) {
+            echo '<a href="create_case.php">Create case</a> ';
+        }
         if (get_user_rights($id)["manage_user_rights_presets"]) {
             echo '<a href="manage_user_rights_presets.php">Manage user rights presets</a> ';
         }
         if (get_user_rights($id)["view_logs"]) {
-            echo '<a href="view_logs.php">Manage user rights presets</a> ';
+            echo '<a href="view_logs.php">View logs</a> ';
         }
         echo "<br>";
     }else{

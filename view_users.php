@@ -6,7 +6,6 @@
  * Time: 14:56
  */
 require("functions.php");
-error_reporting(E_ALL);
 
 if(isset($_SESSION["id"])){
     $can_view_logs = get_user_rights($_SESSION["id"])["view_users"];
@@ -33,7 +32,7 @@ if(isset($_SESSION["id"])){
             </tr>
             <?php
             if(empty($_POST)) {
-                $stmt = $mysqli->prepare("SELECT users.*, people.first_name, people.last_name, people.cpr FROM USERS 
+                $stmt = $mysqli->prepare("SELECT users.*, people.first_name, people.last_name, people.cpr FROM users 
                                           LEFT JOIN people ON users.people_id=people.id
                                           ORDER BY users.id");
                 $stmt->execute();
