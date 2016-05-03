@@ -8,9 +8,8 @@
 
 require("functions.php");
 if(isset($_SESSION["id"])){
-    $can_view_logs = get_user_rights($_SESSION["id"])["manage_user_rights_presets"];
-    if($can_view_logs){
-        log_event("VIEW_USERS", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+    $can_manage_presets = get_user_rights($_SESSION["id"])["manage_user_rights_presets"];
+    if($can_manage_presets){
         ?>
         <html>
         <head>
