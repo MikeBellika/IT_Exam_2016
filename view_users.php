@@ -6,6 +6,7 @@
  * Time: 14:56
  */
 require("functions.php");
+error_reporting(E_ALL);
 
 if(isset($_SESSION["id"])){
     $can_view_logs = get_user_rights($_SESSION["id"])["view_users"];

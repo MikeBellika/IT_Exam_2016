@@ -37,21 +37,24 @@ if(isset($_SESSION["id"])){
         <?php
     }else{
         $errors = array();
-        $password_old = generate_hash($_POST["password_old"]);
+        $password_old = $_POST["password_old"];
         $password_new = $_POST["password_new"];
         $password_repeat = $_POST["password_repeat"];
-        $stmt = $mysqli->prepare("SELECT id FROM users WHERE id = ? AND password = ?");
-        $stmt->bind_param("is", $_SESSION["id"], $password_old);
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->fetch();
-        if($stmt->num_rows == 0){
-            array_push($errors, "Old password is incorrect");
+        $stmt = $mysqli->prepare("SELECT id,password FROM users WHERE id = ?");
+        $stmt->bind_param("i", $_SESSION["id"]);
+        if($stmt->execute()){
+            $stmt->bind_result($id, $password_result);
+            $stmt->fetch();
+            if(!password_verify($password_old, $password_result)){
+                array_push($errors, "Invalid password");
+            }
+        }else{
+            array_push($errors, "Invalid password");
         }
         if($password_new != $password_repeat){
             array_push($errors, "Passwords don't match");
         }
-        if(generate_hash($password_new) == $password_old){
+        if(password_verify($password_new, $password_result)){
             array_push($errors, "You need to pick a new password");
         }
         if(strlen($password_new) < 8){

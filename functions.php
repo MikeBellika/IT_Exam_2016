@@ -6,12 +6,7 @@
  * Time: 19:06
  */
 session_start();
-$mysqli = new mysqli("localhost", "root", "", "eksamen");
-
-if (mysqli_connect_errno())
-{
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
-}
+require("config.php");
 
 if(isset($_SESSION["id"])){
     if(is_first_time_login($_SESSION["id"]) == 1 && !isset($_GET["first_time"])){
@@ -54,7 +49,7 @@ function top($title){
             echo '<a href="create_user.php">Create user</a> ';
         }
         if (get_user_rights($id)["view_users"]) {
-            echo '<a href="view_users.php">View user</a> ';
+            echo '<a href="view_users.php">View users</a> ';
         }
         if (get_user_rights($id)["create_person"]) {
             echo '<a href="create_person.php">Create person</a> ';
@@ -65,6 +60,9 @@ function top($title){
         if (get_user_rights($id)["view_logs"]) {
             echo '<a href="view_logs.php">Manage user rights presets</a> ';
         }
+        echo "<br>";
+    }else{
+        echo '<a href="login.php">Login</a> ';
     }
 }
 
