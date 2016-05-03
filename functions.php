@@ -54,7 +54,7 @@ function top($title){
             echo '<a href="create_user.php">Create user</a> ';
         }
         if (get_user_rights($id)["view_users"]) {
-            echo '<a href="view_users.php">Create user</a> ';
+            echo '<a href="view_users.php">View user</a> ';
         }
         if (get_user_rights($id)["create_person"]) {
             echo '<a href="create_person.php">Create person</a> ';
