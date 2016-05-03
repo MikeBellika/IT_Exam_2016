@@ -12,17 +12,20 @@ function login($username, $password){
     global $mysqli;
     $error = array();
 
-    $password = generate_hash($password);
-    $stmt = $mysqli->prepare("SELECT id FROM users WHERE username = ? AND password = ?");
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $stmt->bind_result($id);
-    $stmt->store_result();
-    $stmt->fetch();
-    if($stmt->num_rows == 0){
+    $stmt = $mysqli->prepare("SELECT id,password FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    if($stmt->execute()){
+        $stmt->bind_result($id, $password_result);
+        $stmt->fetch();
+        if(!password_verify($password, $password_result)){
+            array_push($error, "Invalid username or password");
+            return $error;
+        }
+    }else{
         array_push($error, "Invalid username or password");
         return $error;
     }
+
     $stmt->close();
     return $id;
 }

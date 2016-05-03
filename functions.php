@@ -32,8 +32,11 @@ function is_first_time_login($id){
 }
 
 function generate_hash($password){
-    $salt = '$2y$rNQH1uwlNOqRbzYhWeUa$' . substr(md5(uniqid(rand(), true)), 0, 22);
-    return crypt($password, $salt);
+    $options = [
+        'cost' => 11,
+        'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+    ];
+    return password_hash($password, PASSWORD_BCRYPT, $options);
 }
 
 function log_event($action, $response, $ip, $user_id, $people_id){
