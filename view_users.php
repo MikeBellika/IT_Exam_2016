@@ -15,12 +15,10 @@ if(isset($_SESSION["id"])){
         ?>
 
         <form action="" method="POST">
-            <input type="text" name="search_query">
-            <select name="search_term">
-                <option value="id">ID</option>
-                <option value="username">Username</option>
-                <option value="user_rights_id">User rights ID</option>
-            </select>
+            <label>
+                <b>Search for usernames:</b>
+                <input type="text" name="search_query">
+            </label>
             <input type="submit">
         </form>
         <table>
@@ -30,6 +28,7 @@ if(isset($_SESSION["id"])){
                 <td><b>User rights ID</b></td>
                 <td><b>Name</b></td>
                 <td><b>CPR</b></td>
+                <td><b>Edit</b></td>
             </tr>
             <?php
             if(empty($_POST)) {
@@ -46,15 +45,15 @@ if(isset($_SESSION["id"])){
                         <td><?php echo $row["user_rights_id"] ?></td>
                         <td><a href="view_person.php?id=<?php echo $row["people_id"]?>"><?php echo $row["first_name"]." ".$row["last_name"]; ?></a></td>
                         <td><?php echo $row["cpr"] ?></td>
+                        <td><a href="edit_user.php?id=<?php echo $row["id"] ?>">Edit</a></td>
                     </tr>
                     <?php
                 }
             }else{
                 if(!empty($_POST["search_query"])) {
-                    $search_term = $_POST["search_term"];
-                    $query = "SELECT users.*, people.name, people.cpr FROM users
+                    $query = "SELECT users.*, people.first_name, people.last_name, people.cpr FROM users
                               LEFT JOIN people ON users.people_id=people.id
-                              WHERE " . $search_term . " LIKE ? ORDER BY users.id";
+                              WHERE username LIKE ? ORDER BY users.id";
                     $search_query = "%" . $_POST["search_query"] . "%";
                     $stmt = $mysqli->prepare($query);
                     $stmt->bind_param("s", $search_query);
@@ -70,6 +69,7 @@ if(isset($_SESSION["id"])){
                                 <td><?php echo $row["user_rights_id"] ?></td>
                                 <td><a href="view_person.php?id=<?php echo $row["people_id"]?>"><?php echo $row["first_name"]." ".$row["last_name"]; ?></a></td>
                                 <td><?php echo $row["cpr"] ?></td>
+                                <td><a href="edit_user.php?id=<?php echo $row["id"] ?>">Edit</a></td>
                             </tr>
                             <?php
                         }
