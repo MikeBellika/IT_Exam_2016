@@ -34,6 +34,14 @@ if(isset($_SESSION["id"])) {
                         <td><?php echo $row["cpr"]; ?></td>
                     </tr>
                 </table>
+            <?php
+            $can_edit_people = get_user_rights($_SESSION["id"])["edit_person"];
+            if ($can_edit_people) {
+                ?>
+                <a href="edit_person.php?id=<?php echo $id ?>">Edit this person</a>
+                <?php
+            }
+            ?>
             <h2>Cases:</h2>
             <table>
                 <?php
