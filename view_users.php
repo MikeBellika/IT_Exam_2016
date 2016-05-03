@@ -11,12 +11,9 @@ if(isset($_SESSION["id"])){
     $can_view_logs = get_user_rights($_SESSION["id"])["view_users"];
     if($can_view_logs){
         log_event("VIEW_USERS", 1, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
+        top("Admin - View users");
         ?>
-        <html>
-        <head>
-            <title>Admin - View users</title>
-        </head>
-        <body>
+
         <form action="" method="POST">
             <input type="text" name="search_query">
             <select name="search_term">
