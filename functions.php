@@ -39,6 +39,17 @@ function generate_hash($password){
     return password_hash($password, PASSWORD_BCRYPT, $options);
 }
 
+function top($title){
+    ?>
+    <html>
+    <head>
+        <title><?php echo $title?></title>
+    </head>
+    <body>
+    <?php
+    include("menu.php");
+}
+
 function log_event($action, $response, $ip, $user_id, $people_id){
     global $mysqli;
     $error = array();
