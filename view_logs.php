@@ -42,7 +42,7 @@ if(isset($_SESSION["id"])){
                     if(empty($_POST)) {
                         //select everything from logs and username from the users table.
                         //the key in the users table is the id of users_id
-                        $stmt = $mysqli->prepare("SELECT logs.*, users.username, people.cpr, people.name FROM logs
+                        $stmt = $mysqli->prepare("SELECT logs.*, users.username, people.cpr, people.first_name, people.last_name FROM logs
                                               LEFT JOIN users ON logs.users_id=users.id
                                               LEFT JOIN people ON logs.people_id=people.id
                                               ORDER BY logs.id");
@@ -57,7 +57,7 @@ if(isset($_SESSION["id"])){
                                 <td><?php echo $row["ip"] ?></td>
                                 <td><?php echo $row["response"] ?></td>
                                 <td><?php echo $row["username"] ?></td>
-                                <td><?php echo $row["name"] ?></td>
+                                <td><?php echo $row["first_name"]." ".$row["last_name"] ?></td>
                                 <td><?php echo decrypt_cpr($row["cpr"]) ?></td>
                             </tr>
                             <?php
