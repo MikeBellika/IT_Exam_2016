@@ -14,7 +14,7 @@ if(isset($_SESSION["id"])){
         ?>
         <html>
         <head>
-            <title>Admin - View users</title>
+            <title>Admin - Manage user presets</title>
         </head>
         <body>
         <?php
