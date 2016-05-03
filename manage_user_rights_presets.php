@@ -68,7 +68,10 @@ if(isset($_SESSION["id"])){
                 </tr>
                 <?php
             }
-            echo "</table>";
+            ?>
+            </table>
+            <a href="create_user_rights_preset.php">Create user rights preset</a>
+            <?php
             $stmt->close();
         }else{
             $errors = array();
