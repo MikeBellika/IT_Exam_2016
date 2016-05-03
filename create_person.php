@@ -11,8 +11,6 @@ function create_person($first_name, $last_name, $cpr){
     global $mysqli;
     $error = array();
 
-    $cpr = preg_replace('/\D/', '', $cpr);
-
     if(empty($cpr) || empty($first_name) || empty($last_name)){
         array_push($error, "All fields must be filled");
     }
@@ -21,20 +19,24 @@ function create_person($first_name, $last_name, $cpr){
     }
 
 
-    $stmt = $mysqli->prepare("SELECT id FROM people WHERE cpr = ?");
-    $stmt->bind_param("i", $cpr);
+
+    $stmt = $mysqli->prepare("SELECT cpr FROM people");
     $stmt->execute();
-    $stmt->store_result();
-    if($stmt->num_rows > 0){
-        array_push($error, "There is already a user with that CPR");
-        return $error;
+    $result = $stmt->get_result();
+    while($row = $result->fetch_assoc()){
+        if(decrypt_cpr($row["cpr"]) === $cpr){
+            array_push($error, "There is already a user with that CPR");
+            return $error;
+        }
     }
     $stmt->close();
+
+    $cpr = encrypt_cpr(preg_replace('/\D/', '', $cpr));
 
     if(count($error) == 0){
         $query = "INSERT INTO people (first_name, last_name, cpr) VALUES (?,?,?)";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('ssi', $first_name, $last_name, $cpr);
+        $stmt->bind_param('sss', $first_name, $last_name, $cpr);
         if(!$stmt->execute()){
             $stmt->close();
             array_push($error, "Something went wrong when creating person. Please contact a system administrator");

@@ -31,7 +31,7 @@ if(isset($_SESSION["id"])) {
                     </tr>
                     <tr>
                         <td>CPR:</td>
-                        <td><?php echo $row["cpr"]; ?></td>
+                        <td><?php echo decrypt_cpr($row["cpr"]); ?></td>
                     </tr>
                 </table>
             <?php

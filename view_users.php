@@ -44,7 +44,7 @@ if(isset($_SESSION["id"])){
                         <td><?php echo $row["username"] ?></td>
                         <td><?php echo $row["user_rights_id"] ?></td>
                         <td><a href="view_person.php?id=<?php echo $row["people_id"]?>"><?php echo $row["first_name"]." ".$row["last_name"]; ?></a></td>
-                        <td><?php echo $row["cpr"] ?></td>
+                        <td><?php echo decrypt_cpr($row["cpr"]) ?></td>
                         <td><a href="edit_user.php?id=<?php echo $row["id"] ?>">Edit</a></td>
                     </tr>
                     <?php
@@ -68,7 +68,7 @@ if(isset($_SESSION["id"])){
                                 <td><?php echo $row["username"] ?></td>
                                 <td><?php echo $row["user_rights_id"] ?></td>
                                 <td><a href="view_person.php?id=<?php echo $row["people_id"]?>"><?php echo $row["first_name"]." ".$row["last_name"]; ?></a></td>
-                                <td><?php echo $row["cpr"] ?></td>
+                                <td><?php echo decrypt_cpr($row["cpr"]) ?></td>
                                 <td><a href="edit_user.php?id=<?php echo $row["id"] ?>">Edit</a></td>
                             </tr>
                             <?php

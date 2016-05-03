@@ -97,7 +97,6 @@ function encrypt_cpr($cpr){
     $cpr = openssl_encrypt($cpr, "aes-256-cbc", $password, 0, $iv);
     return $iv.":".$cpr;
 }
-
 function get_user_rights($user_id){
     global $mysqli;
     $stmt = $mysqli->prepare("SELECT user_rights.* FROM user_rights
