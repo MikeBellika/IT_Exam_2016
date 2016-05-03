@@ -129,7 +129,6 @@ if(isset($_SESSION["id"])){
                     }
                     $stmt->close();
                 }else{
-                    echo "test";
                     //ID Invalid. Really only possible if the user has used developer tools to tamper with the form.
                     //This is more serious than just a normal error, so it gets its own error message.
                     log_event("USER_RIGHTS_FORM_TAMPER", 0, $_SERVER["REMOTE_ADDR"], $_SESSION["id"], NULL);
