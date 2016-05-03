@@ -82,11 +82,20 @@ function log_event($action, $response, $ip, $user_id, $people_id){
 }
 
 function decrypt_cpr($cpr){
+    $parts = explode(':', $cpr);
+    $cpr = $parts[1];
+    $iv = $parts[0];
+    $password = "39849f50df275b2cd3907631aaa8809c";
+
+    $cpr = openssl_decrypt($cpr, "AES-256-CBC", $password, 0, $iv);
     return $cpr;
 }
 
 function encrypt_cpr($cpr){
-
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length("aes-256-cbc"));
+    $password = "39849f50df275b2cd3907631aaa8809c";
+    $cpr = openssl_encrypt($cpr, "aes-256-cbc", $password, 0, $iv);
+    return $iv.":".$cpr;
 }
 
 function get_user_rights($user_id){
