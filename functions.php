@@ -44,6 +44,7 @@ function top($title){
     <html>
     <head>
         <title><?php echo $title?></title>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
     <?php
