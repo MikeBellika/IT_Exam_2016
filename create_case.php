@@ -57,6 +57,7 @@ if(isset($_SESSION["id"])){
         top("Admin - Create case");
         if(empty($_POST)) {
             ?>
+            On this page you can create a case 
             <form action="" method="POST">
                 <table>
                     <tr>

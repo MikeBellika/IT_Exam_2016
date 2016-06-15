@@ -81,37 +81,58 @@ if(isset($_SESSION["id"])){
         if(empty($_POST)) {
             ?>
             <form action="" method="post">
-                <input type="text" name="username" value="Username"><br>
-                <input type="password" name="password" value="11111111"><br>
-                <select name="people_id">
-                    <?php
-                    $stmt = $mysqli->prepare("SELECT first_name, last_name, id FROM people");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while($row = $result->fetch_assoc()){
-                        ?>
-                        <option value="<?php echo $row["id"]?>">
-                            <?php echo $row["first_name"]." ". $row["last_name"]?>
-                        </option>
-                        <?php
-                    }
-                    $stmt->close();
-                    ?>
-                </select><br>
-                <select name="userrights_id">
-                    <?php
-                    $stmt = $mysqli->prepare("SELECT preset_name, id FROM user_rights");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while($row = $result->fetch_assoc()){
-                        ?>
-                        <option value="<?php echo $row["id"]?>"><?php echo $row["preset_name"]?></option>
-                        <?php
-                    }
-                    $stmt->close();
-                    ?>
-                </select><br>
-                <input type="submit" value="Create user">
+                <table>
+                <tr>
+                    <td><label for="username">Username</label></td>
+                    <td><input type="text" name="username" id="username" placeholder="Username"></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Password</label></td>
+                    <td><input type="password" name="password" id="password" placeholder="Password"></td>
+                </tr>
+                <tr>
+                    <td><label for="people_id">Person</label></td>
+                    <td>
+                        <select name="people_id">
+                            <?php
+                            $stmt = $mysqli->prepare("SELECT first_name, last_name, id FROM people");
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            while($row = $result->fetch_assoc()){
+                                ?>
+                                <option value="<?php echo $row["id"]?>">
+                                    <?php echo $row["first_name"]." ". $row["last_name"]?>
+                                </option>
+                                <?php
+                            }
+                            $stmt->close();
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>User rights preset name</td>
+                    <td>
+                        <select name="userrights_id">
+                            <?php
+                            $stmt = $mysqli->prepare("SELECT preset_name, id FROM user_rights");
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            while($row = $result->fetch_assoc()){
+                                ?>
+                                <option value="<?php echo $row["id"]?>"><?php echo $row["preset_name"]?></option>
+                                <?php
+                            }
+                            $stmt->close();
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Create user"></td>
+                </tr>
+                </table>
             </form>
             <?php
         }else{

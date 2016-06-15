@@ -42,6 +42,7 @@ function top($title){
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
+        <nav>
     <?php
     if(isset($_SESSION["id"])) {
         $id = $_SESSION["id"];
@@ -63,10 +64,14 @@ function top($title){
         if (get_user_rights($id)["view_logs"]) {
             echo '<a href="view_logs.php">View logs</a> ';
         }
-        echo "<br>";
+            echo '<a href="logout.php">Logout</a>';
     }else{
         echo '<a href="login.php">Login</a> ';
     }
+    ?>
+        </nav>
+        <div id="content">
+    <?php
 }
 
 function log_event($action, $response, $ip, $user_id, $people_id){
@@ -83,6 +88,9 @@ function log_event($action, $response, $ip, $user_id, $people_id){
 }
 
 function decrypt_cpr($cpr){
+    if(empty($cpr)){
+        return false;
+    }
     $parts = explode(':', $cpr);
     $cpr = $parts[1];
     $iv = $parts[0];

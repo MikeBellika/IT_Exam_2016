@@ -1,11 +1,42 @@
 body{
     font-family: Arial, Verdana;
+    padding:0;
+    margin:0;
 }
 a{
     padding:5px;
 }
-table, th, td {
+#content table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
     padding:5px;
+}
+nav{
+    background-color:#63d297;
+    height:50px;
+    line-height:50px;
+}
+nav a{
+    color:black;
+    text-decoration:none;
+}
+a:hover{
+    opacity:0.7;
+}
+
+.login{
+    border: 0;
+    outline:none;
+    margin:auto;
+    display:inline-block;
+}
+
+#loginform{
+    text-align:center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#content{
+    padding:20px;
 }

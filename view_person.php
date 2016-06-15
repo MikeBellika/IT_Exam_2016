@@ -64,7 +64,11 @@ if(isset($_SESSION["id"])) {
                         ?>
                         <tr>
                             <td><?php echo $row["id"] ?></td>
-                            <td><?php echo $row["title"] ?></td>
+                            <td><?php if(get_user_rights($_SESSION["id"])["edit_case"]==1){
+                                    echo '<a href="view_case.php?id='.$row["id"].'">'.$row["title"].'</a>';
+                                }else{
+                                    echo $row["title"];
+                                }?></td>
                             <td><?php echo $row["creation_date"] ?></td>
                         </tr>
                         <?php

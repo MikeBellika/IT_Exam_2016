@@ -59,10 +59,25 @@ if(isset($_SESSION["id"])){
         if(empty($_POST)) {
             ?>
             <form action="" method="post">
-                <input type="text" name="first_name" value="First name"><br>
-                <input type="text" name="last_name" value="Last name"><br>
-                CPR:<input type="number" name="cpr"><br>
-                <input type="submit" value="Create person">
+                <table>
+                    <tr>
+                        <td><label for="first_name">First name</label></td>
+                        <td><input type="text" name="first_name" placeholder="First name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="last_name">Last name</label></td>
+                        <td><input type="text" name="last_name" placeholder="Last name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="cpr">CPR</label></td>
+                        <td><input type="number" name="cpr"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Create person"></td>
+                    </tr>
+                </table>
+
             </form>
             <?php
         }else{
